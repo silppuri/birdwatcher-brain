@@ -1,0 +1,14 @@
+.DS_Store
+
+data/train/**
+data/test/**
+data/experiment/**
+data/*.tfrecords
+data/mp3
+env
+*.pyc
+tmp
+logs
+.ropeproject
+.ipynb_checkpoints
+models
