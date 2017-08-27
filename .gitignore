@@ -1,9 +1,10 @@
 .DS_Store
 
+data/audio
 data/train/**
 data/test/**
 data/experiment/**
-data/*.tfrecords
+data/*.tfrecord
 data/mp3
 env
 *.pyc

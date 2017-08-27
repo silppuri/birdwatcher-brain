@@ -14,17 +14,17 @@ from keras import backend as K
 num_epochs = 20
 image_height = 257
 image_width = 515
-train_length = 34325
-test_length = 8624
+train_length = 5464
+test_length = 1389
 
 classes = np.load('data/classes.npy')
 clean_sample = compose(amplitude_to_db, stft, read_audio)
 
-train_generator = Generator('data/train.tfrecords', parser=clean_sample)
-test_generator = Generator('data/test.tfrecords', parser=clean_sample)
+train_generator = Generator('data/train.tfrecord', parser=clean_sample)
+test_generator = Generator('data/test.tfrecord', parser=clean_sample)
 
 callbacks = [
-    TensorBoard(log_dir="logs/autoencoder{}".format(time())),
+    TensorBoard(log_dir="logs/birdwatcher-{}".format(time())),
     ModelCheckpoint("models/birdwatcher.h5")
 ]
 
