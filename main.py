@@ -11,6 +11,9 @@ from keras.callbacks import TensorBoard, ModelCheckpoint
 from keras.layers import Input, Convolution2D, MaxPooling2D, Activation, concatenate, Dropout, GlobalAveragePooling2D, add, Reshape
 from keras.models import Model
 from keras import backend as K
+from kapre.time_frequency import Spectrogram, Melspectrogram
+from kapre.utils import Normalization2D
+from kapre.augmentation import AdditiveNoise
 
 num_epochs = 30
 image_height = 257
@@ -19,11 +22,9 @@ train_length = 5464
 test_length = 1389
 
 classes = np.load('data/classes.npy')
-clean_samples = compose(reshape, amplitude_to_db, stft, read_audio)
-noisy_samples = compose(reshape, noise, amplitude_to_db, stft, read_audio)
 
-train_generator = Generator('data/train.tfrecord', parser=noisy_samples)
-test_generator = Generator('data/test.tfrecord', parser=clean_samples)
+train_generator = Generator('data/train.tfrecord', parser=compose(noise, read_audio))
+test_generator = Generator('data/test.tfrecord', parser=read_audio)
 
 callbacks = [
     TensorBoard(log_dir="logs/birdwatcher-{}".format(time()), write_images=True),
@@ -60,11 +61,10 @@ def fire_module(x, fire_id, squeeze=16, expand=64):
 
 # Original SqueezeNet from paper.
 
-def SqueezeNet(input_tensor=None, input_shape=None, classes=len(classes)):
-    img_input = Input(shape=(image_height, image_width))
-
-    x = Reshape((image_height, image_width, 1), input_shape=(image_height, image_width))(img_input)
-
+sr = 44100
+def SqueezeNet(input_tensor=None, input_shape=(1, 44100*3), classes=len(classes)):
+    inputs = Input(shape=input_shape)
+    x = Spectrogram(n_dft=512)(inputs)
     x = Convolution2D(64, (3, 3), strides=(2, 2), padding='valid', name='conv1')(x)
     x = PReLU(name='prelu_conv1')(x)
     x = MaxPooling2D(pool_size=(3, 3), strides=(2, 2), name='pool1')(x)
@@ -97,7 +97,7 @@ def SqueezeNet(input_tensor=None, input_shape=None, classes=len(classes)):
     x = GlobalAveragePooling2D()(x)
     out = Activation('softmax', name='loss')(x)
 
-    model = Model(img_input, out, name='squeezenet')
+    model = Model(inputs, out, name='squeezenet')
     return model
 
 model = SqueezeNet()

@@ -28,7 +28,7 @@ def audio_paths_and_labels(folder, pattern="*.wav"):
     return np.asarray(filenames), np.asarray(labels)
 
 def read_audio(audio):
-    return tf.reshape(audio, [44100 * 3]) # reshape from shape (44100*3, 1) to (44100 * 3)
+    return tf.reshape(audio, [1, 44100 * 3]) # reshape from shape (44100*3, 1) to (44100 * 3)
 
 
 def stft(audio):
@@ -66,7 +66,7 @@ class Generator():
         dataset = TFRecordDataset(self._filename)
         dataset = dataset.map(self._parse_tfrecord, num_threads=4, output_buffer_size=2*4*batch_size)
         dataset = dataset.repeat()
-        dataset = dataset.shuffle(buffer_size=10000)
+        dataset = dataset.shuffle(buffer_size=5000)
         dataset = dataset.batch(batch_size)
         self._session = tf.Session()
         self._iterator = dataset.make_one_shot_iterator()
