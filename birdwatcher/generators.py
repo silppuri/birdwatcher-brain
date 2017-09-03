@@ -1,5 +1,5 @@
-import os
 import pdb
+import os
 import numpy as np
 import tensorflow as tf
 import matplotlib.pyplot as plt
@@ -10,6 +10,9 @@ from tensorflow.contrib.ffmpeg import decode_audio
 
 
 FILE_BYTES = 264678
+NUM_CLASSES = len(np.load('data/classes.npy'))
+
+identity = lambda x: x
 
 def amplitude_to_db(S):
     magnitude = tf.abs(S)
@@ -37,10 +40,10 @@ def normalize_image(X):
     return tf.nn.relu(X)
 
 def reshape(X):
-    return tf.reshape(X, [257, 515, 1])
+    return tf.reshape(X, [257, 515])
 
-def noisy_train_sample(X):
-    return tf.add(X, tf.random_normal(X.shape, mean=0.0, stddev=0.5)), X
+def noise(X):
+    return tf.add(X, tf.random_normal(X.shape, mean=0.0, stddev=0.3))
 
 def train_sample(X):
     return X, X
@@ -57,7 +60,7 @@ def compose(*functions):
     return functools.reduce(lambda f, g: lambda x: f(g(x)), functions, lambda x: x)
 
 class Generator():
-    def __init__(self, tf_record_path, batch_size=32, num_epochs=10, parser=default_parser):
+    def __init__(self, tf_record_path, batch_size=32, num_epochs=10, parser=identity):
         self._filename = tf_record_path
         self._batch_size = batch_size
         self._parser = parser
@@ -77,7 +80,7 @@ class Generator():
         audio = tf.decode_raw(parsed_features['audio'], tf.float32)
         label = tf.cast(parsed_features['label'], tf.int32)
         X = self._parser(audio)
-        return X, tf.one_hot(label, 90, axis=-1)
+        return X, tf.one_hot(label, NUM_CLASSES, axis=-1)
 
     def next_batch(self):
         while 1:

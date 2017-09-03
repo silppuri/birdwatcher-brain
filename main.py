@@ -1,30 +1,32 @@
+import pdb
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 import numpy as np
 import matplotlib.pyplot as plt
 
 from time import time
-from birdwatcher.generators import Generator, compose, stft, amplitude_to_db, read_audio, reshape, normalize_image
+from birdwatcher.generators import Generator, compose, stft, amplitude_to_db, read_audio, reshape, normalize_image, noise
 from keras.layers.advanced_activations import PReLU
 from keras.callbacks import TensorBoard, ModelCheckpoint
 from keras.layers import Input, Convolution2D, MaxPooling2D, Activation, concatenate, Dropout, GlobalAveragePooling2D, add, Reshape
 from keras.models import Model
 from keras import backend as K
 
-num_epochs = 20
+num_epochs = 30
 image_height = 257
 image_width = 515
 train_length = 5464
 test_length = 1389
 
 classes = np.load('data/classes.npy')
-clean_sample = compose(amplitude_to_db, stft, read_audio)
+clean_samples = compose(reshape, amplitude_to_db, stft, read_audio)
+noisy_samples = compose(reshape, noise, amplitude_to_db, stft, read_audio)
 
-train_generator = Generator('data/train.tfrecord', parser=clean_sample)
-test_generator = Generator('data/test.tfrecord', parser=clean_sample)
+train_generator = Generator('data/train.tfrecord', parser=noisy_samples)
+test_generator = Generator('data/test.tfrecord', parser=clean_samples)
 
 callbacks = [
-    TensorBoard(log_dir="logs/birdwatcher-{}".format(time())),
+    TensorBoard(log_dir="logs/birdwatcher-{}".format(time()), write_images=True, histogram_freq=1),
     ModelCheckpoint("models/birdwatcher.h5")
 ]
 
@@ -58,8 +60,7 @@ def fire_module(x, fire_id, squeeze=16, expand=64):
 
 # Original SqueezeNet from paper.
 
-def SqueezeNet(input_tensor=None, input_shape=None, classes=90):
-
+def SqueezeNet(input_tensor=None, input_shape=None, classes=len(classes)):
     img_input = Input(shape=(image_height, image_width))
 
     x = Reshape((image_height, image_width, 1), input_shape=(image_height, image_width))(img_input)
