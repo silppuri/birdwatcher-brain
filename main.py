@@ -23,7 +23,7 @@ test_length = 1389
 
 classes = np.load('data/classes.npy')
 
-train_generator = Generator('data/train.tfrecord', parser=compose(noise, read_audio))
+train_generator = Generator('data/train.tfrecord', parser=read_audio)
 test_generator = Generator('data/test.tfrecord', parser=read_audio)
 
 callbacks = [
@@ -64,7 +64,8 @@ def fire_module(x, fire_id, squeeze=16, expand=64):
 sr = 44100
 def SqueezeNet(input_tensor=None, input_shape=(1, 44100*3), classes=len(classes)):
     inputs = Input(shape=input_shape)
-    x = Spectrogram(n_dft=512)(inputs)
+    x = Spectrogram(n_dft=512, return_decibel_spectrogram=True)(inputs)
+    x = AdditiveNoise(power=0.3, random_gain=True)(x)
     x = Convolution2D(64, (3, 3), strides=(2, 2), padding='valid', name='conv1')(x)
     x = PReLU(name='prelu_conv1')(x)
     x = MaxPooling2D(pool_size=(3, 3), strides=(2, 2), name='pool1')(x)
