@@ -9,7 +9,6 @@ from tensorflow.contrib.data import TFRecordDataset
 from tensorflow.contrib.ffmpeg import decode_audio
 
 
-FILE_BYTES = 264678
 NUM_CLASSES = len(np.load('data/classes.npy'))
 
 identity = lambda x: x

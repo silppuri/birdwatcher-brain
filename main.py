@@ -26,7 +26,7 @@ train_generator = Generator('data/train.tfrecord', parser=noisy_samples)
 test_generator = Generator('data/test.tfrecord', parser=clean_samples)
 
 callbacks = [
-    TensorBoard(log_dir="logs/birdwatcher-{}".format(time()), write_images=True, histogram_freq=1),
+    TensorBoard(log_dir="logs/birdwatcher-{}".format(time()), write_images=True),
     ModelCheckpoint("models/birdwatcher.h5")
 ]
 
