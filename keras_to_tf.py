@@ -9,6 +9,9 @@ from tensorflow.python.tools import freeze_graph
 from tensorflow.python.tools import optimize_for_inference_lib
 from tensorflow.core.framework import graph_pb2
 from tensorflow.python.platform import gfile
+from kapre.time_frequency import Spectrogram, Melspectrogram
+from kapre.utils import Normalization2D
+from kapre.augmentation import AdditiveNoise
 
 sess = tf.Session()
 K.set_session(sess)
@@ -17,10 +20,10 @@ K.set_learning_phase(0)  # all new operations will be in test mode from now on
 
 # serialize the model and get its weights, for quick re-building
 
-previous_model = load_model('models/birdwatcher.h5')
+previous_model = load_model('models/birdwatcher.h5', custom_objects={"Spectrogram": Spectrogram, "AdditiveNoise": AdditiveNoise})
 previous_model.save_weights('models/birdwatcher_weights.h5')
 model_json = previous_model.to_json()
-new_model = model_from_json(model_json)
+new_model = model_from_json(model_json, custom_objects={"Spectrogram": Spectrogram, "AdditiveNoise": AdditiveNoise})
 new_model.load_weights('models/birdwatcher_weights.h5')
 checkpoint_prefix = os.path.join("models", "saved_checkpoint")
 
