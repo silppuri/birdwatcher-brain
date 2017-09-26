@@ -100,8 +100,8 @@ def write_tfrecord(src, dst=None):
     sys.stdout.flush()
 
 if __name__ == '__main__':
-    # remove_silence('data/mp3', 'data/audio')
-    # remove_short('data/audio')
+    remove_silence('data/mp3', 'data/audio')
+    remove_short('data/audio')
     generate_more_samples('data/audio', 'data/tmp')
     data_split('data/tmp', train_dst='data/train', test_dst='data/test')
     write_tfrecord('data/train', dst='data/train.tfrecord')
