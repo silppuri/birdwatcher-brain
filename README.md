@@ -4,7 +4,8 @@ Bird identification deep neural network using SqueezeNet architecture with simpl
 
 ## Data
 
-The data used in this model is scraped from various sources, mainly from http://xeno-canto.org.
+The data used in this model is scraped from various sources. I'll have to check the lisencing of every file 
+before releasing the model or the actual scraped data.
 
 ### Preprocessing
 
