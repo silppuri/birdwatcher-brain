@@ -1,11 +1,10 @@
-require "pry"
 require 'uri'
 require 'csv'
 require "nokogiri"
 require "open-uri"
 
 csv = CSV.open("output.csv", 'w',{:col_sep => ",", :quote_char => '\'', :force_quotes => true})
-QUERY="http://www.xeno-canto.org/explore?query=box%3A58.124%2C3.955%2C71.581%2C34.014%20"
+QUERY="<omited>"
 PAGE_QUERY_PARAM="pg"
 
 def parse_header(header, csv)

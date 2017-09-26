@@ -1,4 +1,4 @@
-# Birdwatcher
+# [Birdwatcher](https://www.youtube.com/watch?v=e4mC3dmwqEY)
 
 Bird identification deep neural network using SqueezeNet architecture with simple bypass connections.
 
@@ -45,4 +45,30 @@ that the train examples vary a little always between even epochs).
 
 ## Results
 
-The current model has been trained 
+The current model has been trained for around 20 epochs with
+Train accuracy of ~0.96 and test accuracy of ~0.84. This is not perfect
+but it's a start for a quite simple architecture.
+
+![Results](images/results.png)
+
+## Future
+
+I'll try to improve this network at some point. But before optimizing that
+my priority is to bundle this into a iPhone-app.
+
+# Running
+You would need a bunch of data first but, yeah:
+
+`virtualenv -p python3 env`
+`source env/bin/activate`
+`pip install -r requirements.txt`
+
+## Write `TFRecord`-files
+
+`python lib/tfrecord_writer.py`
+
+## Train
+`python main.py`
+
+## Optimize
+`python keras_to_tf.py`
