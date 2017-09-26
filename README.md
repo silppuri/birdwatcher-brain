@@ -60,16 +60,17 @@ my priority is to bundle this into an iPhone-app.
 # Running
 You would need a bunch of data first but, yeah:
 
-`virtualenv -p python3 env`
-`source env/bin/activate`
-`pip install -r requirements.txt`
+`$ virtualenv -p python3 env`
+
+`$ source env/bin/activate`
+
+`$ pip install -r requirements.txt`
 
 ## Write `TFRecord`-files
-
-`python lib/tfrecord_writer.py`
+`$ python lib/tfrecord_writer.py`
 
 ## Train
-`python main.py`
+`$ python main.py`
 
 ## Optimize
-`python keras_to_tf.py`
+`$ python keras_to_tf.py`
