@@ -10,15 +10,15 @@ The data used in this model is scraped from various sources, mainly from http://
 
 The data is used as is, meaning no noise reduction of other filtering is
 applied. Only some of the silent sections of the files are removed before
-cutting the pieces in to 3sec mono audio files.
+cutting the pieces into 3sec mono audio files.
 
 The splitting is applied with a sliding window of 1.5sec steps.
 This way more audio samples are generated from each audio file.
 
 The files are then written to a `TFRecord`-file. This way we minimize
-the amount of readable files and minimize the amount of IO operations.
+A number of readable files and minimize the amount of IO operations.
 
-After this the samples are ready for use.
+After this, the samples are ready for use.
 
 ### Feeding data to the network
 
@@ -31,15 +31,15 @@ This allows nice API for multithreaded preloading and transformation of
 the audio files. The code can be found in
 [`generators.py`](birdwatcher/generators.py)
 
-At first the network had own STFT-implementation, but due to the freezing
-and inference optimization the preloading graph could not be used after
+At first, the network had own STFT-implementation, but due to the freezing
+and inference optimization, the preloading graph could not be used after
 the optimization. This is why the project now uses
 [kapre](https://github.com/keunwoochoi/kapre).
 
 ### The network
 
 The network implementation can be found in [`main.py`](main.py).
-It's a basic SqueezeNet that takes in the 3sec audiofiles and transforms
+It's a basic SqueezeNet that takes in the 3sec audio files and transforms
 the files with STFT and injects some additive noise during training (so
 that the train examples vary a little always between even epochs).
 
@@ -54,7 +54,7 @@ but it's a start for a quite simple architecture.
 ## Future
 
 I'll try to improve this network at some point. But before optimizing that
-my priority is to bundle this into a iPhone-app.
+my priority is to bundle this into an iPhone-app.
 
 # Running
 You would need a bunch of data first but, yeah:
