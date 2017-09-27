@@ -14,10 +14,12 @@ applied. Only some of the silent sections of the files are removed before
 cutting the pieces into 3sec mono audio files.
 
 The splitting is applied with a sliding window of 1.5sec steps.
-This way more audio samples are generated from each audio file.
+This way more audio samples are generated from each individual file.
 
-The files are then written to a `TFRecord`-file. This way we minimize
-A number of readable files and minimize the amount of IO operations.
+The files are then written to a train and test `TFRecord`-file with split
+ratio of 80% for train and 20% for test. With the `TFRecord`-files it is 
+possible to minimize the number of readable files and minimize the amount
+of IO operations.
 
 After this, the samples are ready for use.
 
@@ -32,10 +34,10 @@ This allows nice API for multithreaded preloading and transformation of
 the audio files. The code can be found in
 [`generators.py`](birdwatcher/generators.py)
 
-At first, the network had own STFT-implementation, but due to the freezing
-and inference optimization, the preloading graph could not be used after
-the optimization. This is why the project now uses
-[kapre](https://github.com/keunwoochoi/kapre).
+At first, the network had own STFT-implementation, but due to problems
+introduced by the freezing and inference optimization of the computation
+graph the project now uses [kapre](https://github.com/keunwoochoi/kapre)
+in performing the needed transformations.
 
 ### The network
 
