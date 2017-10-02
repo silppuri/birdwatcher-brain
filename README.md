@@ -1,6 +1,6 @@
 # [Birdwatcher](https://www.youtube.com/watch?v=e4mC3dmwqEY)
 
-Bird identification deep neural network using SqueezeNet architecture with simple bypass connections.
+Bird identification deep neural network using [SqueezeNet](https://arxiv.org/abs/1602.07360) architecture with simple bypass connections.
 
 ## Data
 
