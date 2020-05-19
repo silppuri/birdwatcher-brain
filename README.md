@@ -4,8 +4,7 @@ Bird identification deep neural network using [SqueezeNet](https://arxiv.org/abs
 
 ## Data
 
-The data used in this model is scraped from various sources. I'll have to check the lisencing of every file 
-before releasing the model or the actual scraped data.
+The data used in this model is scraped from various open bird database sources.
 
 ### Preprocessing
 
