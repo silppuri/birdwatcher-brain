@@ -1,6 +1,6 @@
 audioread==2.1.5
 benderthon==0.2.1
-bleach==1.5.0
+bleach==3.3.0
 cycler==0.10.0
 Cython==0.26
 decorator==4.1.2
