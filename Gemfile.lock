@@ -4,9 +4,10 @@ GEM
     byebug (9.0.6)
     coderay (1.1.1)
     method_source (0.8.2)
-    mini_portile2 (2.1.0)
-    nokogiri (1.7.2)
-      mini_portile2 (~> 2.1.0)
+    mini_portile2 (2.8.0)
+    nokogiri (1.13.2)
+      mini_portile2 (~> 2.8.0)
+      racc (~> 1.4)
     pry (0.10.4)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -14,6 +15,7 @@ GEM
     pry-byebug (3.4.2)
       byebug (~> 9.0)
       pry (~> 0.10)
+    racc (1.6.0)
     slop (3.6.0)
 
 PLATFORMS
